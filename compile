@@ -1,0 +1,6 @@
+#!/bin/bash
+
+name=lispy
+
+clang -g ${name}.c mpc.c -o ${name} \
+ -ledit -lm

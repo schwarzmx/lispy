@@ -1,0 +1,8 @@
+
+lispy code is base off the tutorial at[1] and thus licensed under Creative Commons Attribution-NonCommercial-ShareAlike 3.0 [2].
+
+MPC is licensed under BSD3 [3]
+
+[1] https://github.com/orangeduck/BuildYourOwnLisp
+[2] http://creativecommons.org/licenses/by-nc-sa/3.0/
+[3] https://github.com/orangeduck/mpc
