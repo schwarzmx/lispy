@@ -1,5 +1,5 @@
 
-lispy code is base off the tutorial at[1] and thus licensed under Creative Commons Attribution-NonCommercial-ShareAlike 3.0 [2].
+lispy code is based off the tutorial at[1] and thus licensed under Creative Commons Attribution-NonCommercial-ShareAlike 3.0 [2].
 
 MPC is licensed under BSD3 [3]
 
