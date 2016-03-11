@@ -4,7 +4,6 @@
 #include <editline/readline.h>
 
 #include "mpc.h"
-// LEFT OFF AT chapter 11
 // TODO:
 // - implement % operator
 // - add a decimal type using 'double'
