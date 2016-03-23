@@ -351,6 +351,7 @@ lval* lval_pop(lval* v, int i);
 lval* lval_join(lval* x, lval* y);
 int lval_is_special(lenv* env, lval* val);
 lval* builtin_eval(lenv* e, lval* val);
+lval* builtin_list(lenv* e, lval* val);
 
 lval* lval_call(lenv* e, lval* f, lval* v) {
 	if (f->builtin) {
@@ -371,6 +372,20 @@ lval* lval_call(lenv* e, lval* f, lval* v) {
 
 		// pop the symbol and argument
 		lval* sym = lval_pop(f->formals, 0);
+
+		if (strcmp(sym->sym, "&") == 0) {
+			if (f->formals->count != 1) {
+				lval_del(v);
+				return lval_err("Function format invalid. "
+					"Symbol '&' not followed by single symbol.");
+			}
+
+			lval* nsym = lval_pop(f->formals, 0);
+			lenv_put(f->env, nsym, builtin_list(e, v));
+			lval_del(sym); lval_del(nsym);
+			break;
+		}
+
 		lval* val = lval_pop(v, 0);
 
 		// put it in the local env
@@ -382,6 +397,28 @@ lval* lval_call(lenv* e, lval* f, lval* v) {
 	}
 
 	lval_del(v);
+
+	// if '&' remains in formal list bind to empty list
+	if (f->formals->count > 0 &&
+			strcmp(f->formals->cell[0]->sym, "&") == 0) {
+		// ensure that & is not passed invalidly
+		if (f->formals->count != 2) {
+			return lval_err("Function format invalid. " 
+				"Symbol '&' not followed by single symbol.");
+		}
+
+		// pop and delete & symbol
+		lval_del(lval_pop(f->formals, 0));
+
+		// pop next symbol and create empty list
+		lval* sym = lval_pop(f->formals, 0);
+		lval* val = lval_qexpr();
+
+		// bind to env and delete
+		lenv_put(f->env, sym, val);
+		lval_del(sym);
+		lval_del(val);
+	}
 
 	if (f->formals->count == 0) {
 		// if everything is bound then evaluate
